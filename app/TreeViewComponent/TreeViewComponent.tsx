@@ -31,7 +31,8 @@ const TreeViewComponent = ({
       if (response.status === 200) {
         console.log("Successfully updated item data");
       }
-    } catch (error) {
+    } catch (error: any) {
+      // Explicitly define the error type
       if (error.response && error.response.status === 422) {
         console.error("Validation error:", error.response.data);
       } else {

@@ -36,7 +36,7 @@ const NestedTagsTree = () => {
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/tree`,
-        newTreeData,
+        newTreeData as TreeDataItem, // Fix TypeScript type
         {
           headers: {
             "Content-Type": "application/json",
@@ -46,8 +46,9 @@ const NestedTagsTree = () => {
       if (response.status === 200) {
         fetchTreeData();
       }
-    } catch (error) {
-      if (error.response && error.response.status === 422) {
+    } catch (error: unknown) {
+      // Specify error type as unknown
+      if (axios.isAxiosError(error) && error.response?.status === 422) {
         console.error("Validation error:", error.response.data);
       } else {
         console.error("Error replacing tree data:", error);
